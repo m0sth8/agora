@@ -59,7 +59,7 @@ func BuildRTCTokenWithUserAccount(appID string, appCertificate string, channelNa
 //                    1/1/1970. If, for example, you want to access the
 //                    Agora Service within 10 minutes after the token is
 //                    generated, set expireTimestamp as the current
-func BuildRTCTokenWithUID(appID string, appCertificate string, channelName string, uid uint32, role RTCRole, privilegeExpiredTs uint32) (string, error) {
+func BuildRTCTokenWithUID(appID string, appCertificate string, channelName string, uid uint32, role RTCRole, privilegeExpiredTs time.Time) (string, error) {
 	uidStr := fmt.Sprint(uid)
 	if uid == 0 {
 		uidStr = ""
