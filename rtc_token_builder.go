@@ -10,9 +10,9 @@ type RTCRole uint16
 
 // Role consts
 const (
-	RoleAttendee  RTCRole = 0
-	RolePublisher RTCRole = 1
-	RoleAdmin     RTCRole = 101
+	RolePublisher  RTCRole = 1
+	RoleSubscriber RTCRole = 2
+	RoleAdmin      RTCRole = 101
 )
 
 //RtcTokenBuilder class
@@ -38,7 +38,7 @@ func BuildRTCTokenWithUserAccount(appID string, appCertificate string, channelNa
 	token := NewAccessTokenStrUID(appID, appCertificate, channelName, userAccount)
 	token.AddPrivilege(PrivilegeJoinChannel, privilegeExpiredTs)
 
-	if (role == RoleAttendee) || (role == RolePublisher) || (role == RoleAdmin) {
+	if (role == RolePublisher) || (role == RoleAdmin) {
 		token.AddPrivilege(PrivilegePublishVideoStream, privilegeExpiredTs)
 		token.AddPrivilege(PrivilegePublishAudioStream, privilegeExpiredTs)
 		token.AddPrivilege(PrivilegePublishDataStream, privilegeExpiredTs)

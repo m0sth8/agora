@@ -3,6 +3,7 @@ package agora
 import (
 	"bytes"
 	"crypto/hmac"
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/binary"
@@ -10,7 +11,7 @@ import (
 	"fmt"
 	"hash/crc32"
 	"io"
-	"math/rand"
+	"math/big"
 	"sort"
 	"time"
 )
@@ -31,15 +32,6 @@ const (
 	PrivilegePublishVideoStream Privileges = 3
 	PrivilegePublishDataStream  Privileges = 4
 
-	PrivilegePublishAudioCdn           Privileges = 5
-	PrivilegePublishVideoCdn           Privileges = 6
-	PrivilegeRequestPublishAudioStream Privileges = 7
-	PrivilegeRequestPublishVideoStream Privileges = 8
-	PrivilegeRequestPublishDataStream  Privileges = 9
-	PrivilegeInvitePublishAudioStream  Privileges = 10
-	PrivilegeInvitePublishVideoStream  Privileges = 11
-	PrivilegeInvitePublishDataStream   Privileges = 12
-
 	PrivilegeAdministrateChannel Privileges = 101
 	PrivilegeLoginRtm            Privileges = 1000
 )
@@ -59,8 +51,8 @@ type AccessToken struct {
 }
 
 func random(min int, max int) int {
-	rand.Seed(time.Now().UnixNano())
-	return rand.Intn(max-min) + min
+	n, _ := rand.Int(rand.Reader, big.NewInt(int64(max)))
+	return int(n.Int64() + int64(min))
 }
 
 func NewAccessToken(appID, appCertificate, channelName string, uid uint32) *AccessToken {
